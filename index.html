@@ -3,8 +3,8 @@
     <head>
         <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
         <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+        <!-- A-Frame GIFシェーダー -->
+        <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
     </head>
 
     <body style="margin: 0; overflow: hidden;">
@@ -12,66 +12,24 @@
             vr-mode-ui="enabled: false;"
             loading-screen="enabled: false;"
             arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-            id="scene"
             embedded
-            gesture-detector
         >
             <a-marker
                 id="animated-marker"
                 type="pattern"
-                preset="custom"
                 url="assets/marker.patt"
-                raycaster="objects: .clickable"
                 emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
             >
-                <!-- Canvasから生成したテクスチャを貼り付ける平面 -->
+                <!-- GIFシェーダーを適用 -->
                 <a-plane
-                    id="gif-plane"
+                    shader="gif"
+                    src="assets/asset.gif"
                     scale="1 1 1"
-                    class="clickable"
                     rotation="-90 0 0"
-                    gesture-handler
-                    material="shader: flat; src: #canvasTexture"
                 ></a-plane>
             </a-marker>
 
             <a-entity camera></a-entity>
         </a-scene>
-
-        <!-- GIFを描画するためのCanvas -->
-        <canvas id="canvasTexture" style="display: none;"></canvas>
-
-        <script>
-            const canvas = document.getElementById('canvasTexture');
-            const ctx = canvas.getContext('2d');
-            const gif = new Image();
-            gif.src = "assets/asset.gif"; // 透過GIFのパス
-
-            gif.onload = () => {
-                canvas.width = gif.width;
-                canvas.height = gif.height;
-
-                // マーカーが検出されたらGIFを再生する
-                const marker = document.querySelector('#animated-marker');
-                marker.addEventListener('markerFound', () => {
-                    animateGIF();
-                });
-
-                marker.addEventListener('markerLost', () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); // マーカーが見つからない時はCanvasをクリア
-                });
-            };
-
-            function animateGIF() {
-                const renderFrame = () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(gif, 0, 0, canvas.width, canvas.height);
-                    requestAnimationFrame(renderFrame); // 毎フレーム描画
-                };
-                renderFrame();
-            }
-        </script>
     </body>
 </html>
