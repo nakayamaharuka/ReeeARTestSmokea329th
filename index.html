@@ -2,18 +2,25 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>GIF Animation in AR.js with aframe-gif-shader</title>
+    <title>GIF Animation with Custom Marker in AR.js</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://rawcdn.githack.com/c-frame/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
-      <a-marker preset="hiro">
+      <a-assets>
+        <!-- カスタムマーカーのパターンファイルを指定 -->
+        <a-asset-item id="custom-marker" src="assets/marker.patt"></a-asset-item>
+      </a-assets>
+
+      <!-- カスタムマーカーを使用 -->
+      <a-marker type="pattern" url="assets/marker.patt">
         <!-- GIFアニメーションの表示 -->
         <a-plane shader="gif" src="assets/asset.gif" position="0 0.5 0" width="1" height="1">
         </a-plane>
       </a-marker>
+
       <a-entity camera></a-entity>
     </a-scene>
   </body>
