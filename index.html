@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
         <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
@@ -26,16 +26,31 @@
                 cursor="fuse: false; rayOrigin: mouse;"
                 id="markerA"
             >
-                <a-image
-                    src="assets/asset.gif"
+                <a-plane
+                    id="gif-plane"
                     scale="1 1 1"
                     class="clickable"
                     rotation="-90 0 0"
                     gesture-handler
-                ></a-image>
+                ></a-plane>
             </a-marker>
 
             <a-entity camera></a-entity>
         </a-scene>
+
+        <script>
+            const gifTexture = new Image();
+            gifTexture.src = "assets/asset.gif";
+
+            gifTexture.onload = () => {
+                const gifPlane = document.querySelector('#gif-plane');
+                gifPlane.setAttribute('material', 'src', gifTexture);
+
+                //テクスチャの自動更新
+                const textureUpdate = setInterval(() => {
+                    gifPlane.components.material.material.material.map.needsUpdate = true;
+                }, 100);    //フレーム更新間隔
+            };
+        </script>
     </body>
 </html>
