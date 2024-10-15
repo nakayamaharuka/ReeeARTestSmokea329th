@@ -6,7 +6,6 @@
         <script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.8/aframe/build/aframe-ar.js"></script>
         <!-- shaderライブラリ -->
         <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
-        <script src="shader-grid-glitch.js"></script>
 
         <link rel="stylesheet" href="style.css">
     </head>
@@ -16,13 +15,15 @@
             <a-assets>
                 <img id="smoke" src="assets/asset.gif">
             </a-assets>
+
             <a-marker id="animated-marker" type="pattern" url="assets/marker.patt">
                 <a-entity
-                    geometry="primitive:plane"
-                    material="shader.gif; src:#smoke opacity:1"
+                    geometry="primitive: plane; height: 1; width: 1"
+                    material="shader: gif; src: #smoke; opacity: 1"
                     rotation="-90 0 0">
                 </a-entity>
             </a-marker>
+
             <a-entity camera></a-entity>
         </a-scene>
     </body>
